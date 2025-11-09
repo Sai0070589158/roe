@@ -1,0 +1,47 @@
+name: Matrix Build with Artifacts
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Matrix Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.9', '3.10', '3.11']
+        exclude:
+          # Keep only 3 parallel variants
+          - os: macos-latest
+            python-version: '3.9'
+          - os: windows-latest
+            python-version: '3.10'
+          - os: ubuntu-latest
+            python-version: '3.11'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: matrix-4838280
+        run: echo "Running matrix build for OS=${{ matrix.os }}, Python=${{ matrix.python-version }}"
+
+      - name: Generate build artifact
+        run: |
+          echo "Build output for OS=${{ matrix.os }}, Python=${{ matrix.python-version }}" > build_output.txt
+          echo "Timestamp: $(date)" >> build_output.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-4838280-${{ matrix.os }}-py${{ matrix.python-version }}
+          path: build_output.txt
