@@ -1,5 +1,5 @@
-# Matrix Build Demo
+# Matrix Build Workflow (GitHub Actions Demo)
 
-This repository demonstrates a GitHub Actions matrix build with artifacts.
+This repository demonstrates a GitHub Actions matrix build with artifact uploads.
 
-**Contact:** yourname@example.com
+**Email:** 23f1001187@ds.study.iitm.ac.in
